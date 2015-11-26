@@ -7,10 +7,15 @@ r = praw.Reddit(user_agent=user_agent)
 
 #main running loop
 #while True:
-sub = r.get_subreddit("videos")
+subname = "videos"
+sub = r.get_subreddit(subname)
 comments = praw.helpers.flatten_tree(sub.get_comments())
+r.get_subreddit("lmao",fetch=True)
 for comment in comments:
     results = [word for word in comment.body.split() if word.startswith('/r/')]
-    pprint(results)    
+    if results:
+        if any(subname not in result for result in results):
+            pprint(results)
+            print comment.title
     #time.sleep(10)
 
