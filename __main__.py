@@ -7,15 +7,24 @@ r = praw.Reddit(user_agent=user_agent)
 
 #main running loop
 #while True:
-subname = "videos"
+subname = u"videos"
 sub = r.get_subreddit(subname)
-comments = praw.helpers.flatten_tree(sub.get_comments())
-r.get_subreddit("lmao",fetch=True)
+comments = sub.get_comments(limit=None,threshold=2)
+count = 0
 for comment in comments:
-    results = [word for word in comment.body.split() if word.startswith('/r/')]
-    if results:
-        if any(subname not in result for result in results):
-            pprint(results)
-            print comment.title
-    #time.sleep(10)
+    if comment.score >= 0: #make sure they will like you
+        if comment.is_root: #make sure its a top level comment
+            results = [word.replace('/r/','') for word in comment.body.split() if word.startswith('/r/')]
+            count+=1
+            if results: #make sure the sub exists
+                if subname not in results: #make sure it isn't the same sub
+                    print "%s %s" % (subname, results[0]) #make sure to remove punctuation 
+                    print "Got a sucker! title is '%s'. \n - checking for subreddit(s) %s..." % (comment.submission, ','.join(results))
+                    for result in results:
+                        try:
+                            r.get_subreddit(result,fetch=True)
+                            print " * Sub %s exists!" % result
+                        except:
+                             print " * Sub %s does not exist.. " % result
+print "ran through %i comments" % count
 
