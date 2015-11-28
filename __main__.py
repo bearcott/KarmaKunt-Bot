@@ -1,5 +1,6 @@
 import time
 import praw
+import regex as re
 from pprint import pprint
 
 user_agent = 'KarmaKunt Karma nabbing machine 1.0 by /u/sausagefest2011'
@@ -14,7 +15,9 @@ count = 0
 for comment in comments:
     if comment.score >= 0: #make sure they will like you
         if comment.is_root: #make sure its a top level comment
-            results = [word.replace('/r/','') for word in comment.body.split() if word.startswith('/r/')]
+            #then filter out mentions of subreddits in each comment
+            results = [re.sub(ur"\p{P}+", "",word.replace('/r/','')) for word in comment.body.split() if word.startswith('/r/')]
+            print results
             count+=1
             if results: #make sure the sub exists
                 if subname not in results: #make sure it isn't the same sub
