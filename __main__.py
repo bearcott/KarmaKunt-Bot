@@ -11,7 +11,7 @@ r = praw.Reddit(user_agent=user_agent)
 #set up Oauth for account
 r.set_oauth_app_info(client_id=config.ID,
                      client_secret=config.SECRET,
-                     redirect_uri='http://127.0.0.1:65010/authorize_callback')
+                     redirect_uri='http://127.0.0.1:%s/authorize_callback'%(config.PORT))
 
 url = r.get_authorize_url('RandDdoMaskShitStrkingFurU.Haxkor!', 'identity', True)
 webbrowser.open(url)
@@ -23,6 +23,20 @@ subname = u"videos"
 sub = r.get_subreddit(subname)
 comments = sub.get_comments(limit=None,threshold=2)
 count = 0
+
+def fetch_auth_token():
+    return true
+
+def autheticating_server(BaseHTTPServer.BaseHTTPRequestHandler):
+    server_address = ('', config.PORT)
+    while fetch_auth_token():
+        httpd.handle_request()
+
+def authenticate:
+    httpd = BaseHTTPServer.HTTPServer(server_address,authenticating_server(BaseHTTPServer.BaseHTTPRequestHandler)
+    
+        
+    
 
 for comment in comments:
     if comment.score >= 0: #make sure they will like you
